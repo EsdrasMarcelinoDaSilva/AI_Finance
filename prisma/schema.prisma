@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Trasaction {
+model Transaction {
   id            String                   @id @default(uuid())
   name          String
   type          TransactionType
@@ -23,6 +23,7 @@ model Trasaction {
   date          DateTime
   createdAt     DateTime                 @default(now())
   updatedAt     DateTime                 @default(now())
+  userId        String
 }
 
 enum TransactionType {

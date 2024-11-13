@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Navbar() {
+const Navbar = () => {
   const pathname = usePathname();
   return (
     <nav className="flex justify-between border-b border-solid py-4 px-8">
@@ -41,4 +41,5 @@ export default function Navbar() {
       <UserButton showName />
     </nav>
   );
-}
+};
+export default Navbar;

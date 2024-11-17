@@ -22,7 +22,7 @@ const TransactionsPage = async () => {
       <Navbar />
       <div className="space-y-6 p-6 overflow-hidden">
         {/* TITULO E BOTÃO */}
-        <div className="flex w-fullitems-center justify-between">
+        <div className="flex w-full items-center justify-between">
           <h1 className="text-2xl font-bold">Transações</h1>
           <AddTransactionButton />
         </div>

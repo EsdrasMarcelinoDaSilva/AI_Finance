@@ -1,3 +1,5 @@
+//
+
 "use client";
 
 import { Pie, PieChart } from "recharts";
@@ -60,8 +62,9 @@ const TransactionsPieChart = ({
     },
   ];
   return (
+    // <ScrollArea className="col-span-1 rounded-md border">
     <Card className="flex flex-col p-6">
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex-1 pb-1">
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
@@ -80,25 +83,26 @@ const TransactionsPieChart = ({
           </PieChart>
         </ChartContainer>
 
-        <div className="space-y-3">
+        <div className="space-y-8">
           <PercentageItem
-            icon={<TrendingUpIcon size={16} className="text-primary" />}
+            icon={<TrendingUpIcon size={20} className="text-primary" />}
             title="Receita"
-            value={typesPercentage[TransactionType.DEPOSIT] ?? 0}
+            value={typesPercentage[TransactionType.DEPOSIT]}
           />
           <PercentageItem
-            icon={<TrendingDownIcon size={16} className="text-red-500" />}
+            icon={<TrendingDownIcon size={20} className="text-red-500" />}
             title="Despesas"
-            value={typesPercentage[TransactionType.EXPENSE] ?? 0}
+            value={typesPercentage[TransactionType.EXPENSE]}
           />
           <PercentageItem
-            icon={<PiggyBankIcon size={16} />}
+            icon={<PiggyBankIcon size={20} />}
             title="Investido"
-            value={typesPercentage[TransactionType.INVESTMENT] ?? 0}
+            value={typesPercentage[TransactionType.INVESTMENT]}
           />
         </div>
       </CardContent>
     </Card>
+    // </ScrollArea>
   );
 };
 

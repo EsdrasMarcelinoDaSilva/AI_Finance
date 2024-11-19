@@ -1,5 +1,3 @@
-//
-
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Navbar from "../_components/navbar";
@@ -11,6 +9,7 @@ import { getDashboard } from "../_data/get-dashboard";
 import ExpensesPerCategory from "./_components/expenses-per-category";
 import LastTransactions from "./_components/last-transactions";
 import { canUserAddTransaction } from "../_data/can-user-add-transaction";
+import AiReportButton from "./_components/ai-report-button";
 
 interface HomeProps {
   searchParams: {
@@ -36,7 +35,10 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
       <div className="flex h-full flex-col overflow-hidden p-3">
         <div className="flex justify-between pb-3 px-1.9">
           <h1 className="text-2xl font-bold">Dashboard</h1>
-          <TimeSelect />
+          <div className="flex items-center gap-3">
+            <AiReportButton month={month} />
+            <TimeSelect />
+          </div>
         </div>
         <div className="grid h-full grid-cols-[2fr,1fr] gap-3 overflow-hidden">
           <div className="flex flex-col gap-3 overflow-hidden">

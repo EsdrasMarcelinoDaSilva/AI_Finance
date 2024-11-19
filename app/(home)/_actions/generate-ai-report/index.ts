@@ -1,0 +1,57 @@
+"use server";
+
+import { db } from "@/app/_lib/prisma";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import OpenAI from "openai";
+import { GenerateAiReportSchema, generateAiReportSchema } from "./schema";
+
+export const generateAiReport = async ({ month }: GenerateAiReportSchema) => {
+  generateAiReportSchema.parse({ month });
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+  const user = await clerkClient().users.getUser(userId);
+  const hasPremiumPlan = user.publicMetadata.subscriptionPlan === "premium";
+  if (!hasPremiumPlan) {
+    throw new Error(
+      "É necessário ter um plano premium para gerar um relatório de IA",
+    );
+  }
+  const openai = new OpenAI({
+    apiKey: process.env.OPEN_AI_API_KEY,
+  });
+  //pegar as transacoes do mes
+  const transactions = await db.transaction.findMany({
+    where: {
+      date: {
+        gte: new Date(`2024-${month}-01`),
+        lte: new Date(`2024-${month}-31`),
+      },
+    },
+  });
+  //enviar para o chatgpt para gerar o relatorio
+  const content = `Gere um relatório com insights sobre as minhas finanças, com dicas e orientações de como melhorar minha vida financeira. As transações estão divididas por ponto e vírgula. A estrutura de cada uma é {DATA}-{TIPO}-{VALOR}-{CATEGORIA}. São elas:
+  ${transactions
+    .map(
+      (transaction) =>
+        `${transaction.date.toLocaleDateString("pt-BR")}-R$${transaction.amount}-${transaction.type}-${transaction.category}`,
+    )
+    .join(";")}`;
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "system",
+        content:
+          "Você é um especialista em gestão e organização de finanças pessoais. Você ajuda as pessoas a organizarem melhor as suas finanças.",
+      },
+      {
+        role: "user",
+        content: content,
+      },
+    ],
+  });
+  //retornar o relatorio
+  return completion.choices[0].message.content;
+};

@@ -6,13 +6,12 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 const LoginPage = async () => {
-    const { userId } = await auth();
-    if (userId) {   
-        redirect("/")
-    }
+  const { userId } = await auth();
+  if (userId) {
+    redirect("/");
+  }
   return (
     <div className="grid h-full grid-cols-2 ">
-      {/* Esquerda */}
       <div className="mx-auto max-w-[550px] h-full flex flex-col justify-center p-8">
         <Image
           src="/logo.svg"
@@ -34,7 +33,7 @@ const LoginPage = async () => {
           </Button>
         </SignInButton>
       </div>
-      {/* Direita */}
+
       <div className="relative h-full w-full">
         <Image
           src="/login.png"
